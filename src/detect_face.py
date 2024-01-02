@@ -45,22 +45,22 @@ def detect_face_with_template(image, template):
     x, y, w, h, max_contour = get_contour_coord(image)
     
     # template matching
-    template = cv2.resize(template, (130, 130))
-    template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    template = cv2.resize(template, (150, 150))
+    # template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+
     mask_crop = mask_ycrcb[y:y + h, x:x + w]
+    # print(mask_crop.shape)
+    if template.shape[0] > mask_crop.shape[0] or template.shape[1] > mask_crop.shape[1]:
+        return None, None
+    
     result = cv2.matchTemplate(mask_crop, template, cv2.TM_CCORR_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
     
-    # Draw rect around face detect
-    face_detect = np.copy(image)
-    top_left = (max_loc[0] + x - 20, max_loc[1] + y - 20)
+    # get face coordinates
+    top_left = (max_loc[0] + x - 30, max_loc[1] + y - 30)
     bottom_right = (top_left[0] + template.shape[1] + 80, top_left[1] + template.shape[0] + 80)
-    cv2.rectangle(face_detect, top_left, bottom_right, (0, 0, 255), 2)
-    cv2.drawContours(image, [max_contour], -1, (0, 255, 0), 1)
-    
-    face_crop = image[(top_left[1]) : (top_left[1] + template.shape[0] + 80), (top_left[0]) : (top_left[0] + template.shape[1] + 80), :]
 
-    return face_detect, face_crop
+    return top_left, bottom_right
 
 
     

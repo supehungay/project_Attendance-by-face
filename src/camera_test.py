@@ -4,10 +4,6 @@ import numpy as np
 
 cap = cv2.VideoCapture(0) 
 
-if not cap.isOpened():
-    print("Không thể mở camera.")
-    exit()
-
 template = cv2.imread('./image/input/template2.png')
 
 # read frame and show
