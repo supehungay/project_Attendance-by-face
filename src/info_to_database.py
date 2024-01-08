@@ -29,12 +29,16 @@ def info2db(msv, ten, lop):
         msv:
             {
                 'Họ tên': ten,
-                'Lớp': lop
+                'Lớp': lop,
+                'Điểm danh': '',
+                'Thời gian': '',
+                'Ghi chú': ''
             }
     }
     key, value = data.popitem()
     ref.child(key).set(value)
     
+# info2db('20002053', 'HUng', 'k12376')    
 def train_model_knn():
     bucket = storage.bucket('attendance-by-face.appspot.com')
     blobs = bucket.list_blobs(prefix='data/')
@@ -60,27 +64,3 @@ def train_model_knn():
     blob = bucket.blob('model/model_knn.pkl')
     blob.upload_from_string(save_model)
     
-
-train_model_knn()
-def train_model_cnn(msv, faces_data):
-    file_model = f'model/model_knn.pkl'
-    bucket = storage.bucket('attendance-by-face.appspot.com')
-    blob = bucket.blob(file_model)
-    check_exists = blob.exists()
-    print(check_exists)
-    
-    LABELS = [msv] * faces_data.shape[0]
-    FACES = faces_data
-    
-    if check_exists:
-        data_as_byte = blob.download_as_bytes()
-        old_model = pickle.loads(data_as_byte)
-        old_model.fit(FACES, LABELS)
-        save_model = pickle.dumps(old_model)
-    else:
-        knn = KNeighborsClassifier(n_neighbors=5)
-        knn.fit(FACES, LABELS)
-        save_model = pickle.dumps(knn)
-        
-    blob.upload_from_string(save_model)
-            

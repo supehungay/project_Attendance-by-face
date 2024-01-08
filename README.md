@@ -26,7 +26,7 @@ face_recognition_knn.py: phát hiện khuận mặt mới mã sinh viên tương
 
 ## run code:
 ```sh
-chỉ cần chạy fil:
-add_faces.py để thực hiện thêm thông tin 
+chỉ cần chạy file:
+add_faces.py: để thực hiện thêm thông tin 
 face_recognition_knn.py: để phát hiện
 ```
