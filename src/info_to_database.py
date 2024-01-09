@@ -9,16 +9,16 @@ import pickle
 
 from sklearn.neighbors import KNeighborsClassifier
 
-cred = credentials.Certificate("../serviceAccountKey.json")
+cred = credentials.Certificate("D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://attendance-by-face-default-rtdb.firebaseio.com/',
-    'storageBucket': 'attendance-by-face.appspot.com'
+    'databaseURL': 'https://attendance-by-face-7de0b-default-rtdb.firebaseio.com/',
+    'storageBucket': 'attendance-by-face-7de0b.appspot.com'
 })
 
 def img2db(msv, faces_zip):
     # folderPath = './data'
     fileName = f'data/{msv}.pkl'
-    bucket = storage.bucket('attendance-by-face.appspot.com')
+    bucket = storage.bucket('attendance-by-face-7de0b.appspot.com')
     blob = bucket.blob(fileName)
     blob.upload_from_string(faces_zip)
 
@@ -36,7 +36,7 @@ def info2db(msv, ten, lop):
     ref.child(key).set(value)
     
 def train_model_knn():
-    bucket = storage.bucket('attendance-by-face.appspot.com')
+    bucket = storage.bucket('attendance-by-face-7de0b.appspot.com')
     blobs = bucket.list_blobs(prefix='data/')
     all_faces = []
     all_msv = []
@@ -61,10 +61,10 @@ def train_model_knn():
     blob.upload_from_string(save_model)
     
 
-train_model_knn()
+# train_model_knn()
 def train_model_cnn(msv, faces_data):
     file_model = f'model/model_knn.pkl'
-    bucket = storage.bucket('attendance-by-face.appspot.com')
+    bucket = storage.bucket('//attendance-by-face-7de0b.appspot.com')
     blob = bucket.blob(file_model)
     check_exists = blob.exists()
     print(check_exists)

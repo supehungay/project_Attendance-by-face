@@ -4,20 +4,19 @@ import numpy as np
 import pickle
 import os
 import matplotlib.pyplot as plt
-
-from info_to_database import img2db, info2db, train_model_knn
+from info_to_database import img2db, info2db, train_model_knn, sift_descriptor, key_des2db
 
 def main():
     cap = cv2.VideoCapture(0) 
-
-    template = cv2.imread('../image/input/template2.png', 0)
+    sift= cv2.xfeatures2d.SIFT_create(contrastThreshold=0.03, edgeThreshold=10)
+    template = cv2.imread('D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\image\\input\\template2.png', 0)
 
     # name = 'Hung'
     msv = input("Cho cái mã sv: ")
     ten = input("Cho cái tên !!!: ")
     lop = input("Cho cái lớp: ")
 
-    size = 50
+    size = 10
     faces_data = []
     count = 0
 
@@ -72,7 +71,6 @@ def main():
     # save faces data
     faces_data = np.asarray(faces_data)
     faces_data = faces_data.reshape(size, -1)
-
     # with open(f'./data/{msv}.pkl', 'wb') as f:
     #     pickle.dump(faces_data, f)
 

@@ -2,10 +2,10 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-cred = credentials.Certificate("./serviceAccountKey.json")
+cred = credentials.Certificate("D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://attendance-by-face-default-rtdb.firebaseio.com/',
-    'storageBucket': 'attendance-by-face.appspot.com'
+    'databaseURL': 'https://attendance-by-face-7de0b-default-rtdb.firebaseio.com/',
+    'storageBucket': 'gs://attendance-by-face-7de0b.appspot.com'
 })
 
 ref = db.reference('Students')

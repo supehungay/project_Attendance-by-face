@@ -13,21 +13,21 @@ import time
 from datetime import datetime
 import detect_face
 
-cred = credentials.Certificate("../serviceAccountKey.json")
+cred = credentials.Certificate("D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://attendance-by-face-default-rtdb.firebaseio.com/',
-    'storageBucket': 'attendance-by-face.appspot.com'
+    'databaseURL': 'https://attendance-by-face-7de0b-default-rtdb.firebaseio.com/',
+    'storageBucket': 'attendance-by-face-7de0b.appspot.com'
 })
 
 file_model = f'model/model_knn.pkl'
-bucket = storage.bucket('attendance-by-face.appspot.com')
+bucket = storage.bucket('attendance-by-face-7de0b.appspot.com')
 blob = bucket.blob(file_model)
 data_as_byte = blob.download_as_bytes()
 knn = pickle.loads(data_as_byte)
 
 
 cap = cv2.VideoCapture(0) 
-template = cv2.imread('../image/input/template2.png', 0)
+template = cv2.imread('D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\image\\input\\template2.png', 0)
 
 while True:
     ret, frame = cap.read()
