@@ -29,12 +29,16 @@ def info2db(msv, ten, lop):
         msv:
             {
                 'Họ tên': ten,
-                'Lớp': lop
+                'Lớp': lop,
+                'Điểm danh': '',
+                'Thời gian': '',
+                'Ghi chú': ''
             }
     }
     key, value = data.popitem()
     ref.child(key).set(value)
     
+# info2db('20002053', 'HUng', 'k12376')    
 def train_model_knn():
     bucket = storage.bucket('attendance-by-face-7de0b.appspot.com')
     blobs = bucket.list_blobs(prefix='data/')

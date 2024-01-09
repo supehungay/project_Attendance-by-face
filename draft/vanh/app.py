@@ -1,16 +1,22 @@
-import add_faces
-import face_recognition_knn
-from info_to_database import train_model_knn
-
-from firebase_admin import db, storage
-
+from apis  import add_faces
+from apis.face_recognition import face_recognition
+# from apis.info_to_database import train_model_knn
+import firebase_admin
+from firebase_admin import credentials, db, storage
+from config import *
 import pandas as pd
 from datetime import datetime
 import os
 from flask import Flask, render_template, request, send_file, jsonify, redirect, url_for
 # from flask import redirect, url_for
 app = Flask(__name__)
-
+def init_db():
+    cred = credentials.Certificate(CERD)
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': DB_URL,
+        'storageBucket': STR_URL
+    })
+    return cred
 
 def get_data():
     data_ref = db.reference('Students')
@@ -51,11 +57,8 @@ def submit_form():
 
 @app.route('/detect')
 def recogni():
-    face_recognition_knn.recognition()
-    # data_list = get_data()
-    # return redirect(url_for('index', data_list=data_list))
+    face_recognition()
     return redirect('/')
-    # return render_template('index.html', data_list=data_list)
     
 @app.route('/export', methods=['POST'])
 def export_to_excel():
@@ -79,40 +82,23 @@ def export_to_excel():
             'Ghi chú': ghichu
         }, ignore_index=True)
         
-    
-    file_name = f'attention_{datetime.now().strftime("%d-%m-%Y")}.xlsx'
-    save_path = os.path.join('../output/', file_name)
-
-    df.to_excel(save_path, index=False)
-    return send_file(save_path, as_attachment=True)
-
-# @app.route('/delete', methods=['POST'])
-# def delete_data():
-#     ref = db.reference('Students')
-#     # data_delete = ref.get()
-    
-#     msv = request.form.get('delete-msv')
-#     print(msv)
-#     ref.child(msv).delete()
-    
-#     # return f"Submitted: msv - {msv}, Tên - {ten}, lớp - {lop}"
-#       # Cập nhật lại dữ liệu sau khi thêm thông tin mới
-#     data_list = get_data()
-
-#     # return render_template('index.html', data_list=data_list)
-#     return render_template('index.html', data_list = data_list)
+    print("Print to excel")
 
 @app.route('/delete/<msv>', methods=['DELETE'])
 def delete_data(msv):
     data_ref = db.reference('Students')
+
     data_ref.child(msv).delete()
     
     bucket = storage.bucket()
     blob = bucket.blob(f'data/{msv}.pkl')
-    blob.delete()
-    
-    train_model_knn()
+    if blob.exists():
+        blob.delete()
+    else:
+        print(f"Blob 'data/20002029.pkl' does not exist.")
+    # train_model_knn()
     return jsonify({'message': 'Data deleted successfully'})
 
 if __name__ == '__main__':
+    cred = init_db()
     app.run(debug=True)

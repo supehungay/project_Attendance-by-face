@@ -6,15 +6,19 @@ import os
 import matplotlib.pyplot as plt
 from info_to_database import img2db, info2db, train_model_knn, sift_descriptor, key_des2db
 
-def main():
+# def add_info():
+#     msv = input("Cho cái mã sv: ")
+#     ten = input("Cho cái tên !!!: ")
+#     lop = input("Cho cái lớp: ")
+#     return msv, ten, lop
+
+
+def add_info(msv, ten, lop):
     cap = cv2.VideoCapture(0) 
     sift= cv2.xfeatures2d.SIFT_create(contrastThreshold=0.03, edgeThreshold=10)
     template = cv2.imread('D:\\dulieuD\\Program Language\\Computer_Vision\\FinalExam\\project_Attendance-by-face\\image\\input\\template2.png', 0)
 
-    # name = 'Hung'
-    msv = input("Cho cái mã sv: ")
-    ten = input("Cho cái tên !!!: ")
-    lop = input("Cho cái lớp: ")
+    # msv, ten, lop = add_info()
 
     size = 10
     faces_data = []
@@ -80,5 +84,6 @@ def main():
     info2db(msv, ten, lop)
     train_model_knn()
 
-if __name__ == "__main__":
-    main()
+# add_info(20002053, 'HUng', 'k12376')
+# if __name__ == "__main__":
+#     main()
