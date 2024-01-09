@@ -3,3 +3,5 @@ draft
 notebook
 *pycache*
 serviceAccountKey.json
+draft
+set_env.ps1

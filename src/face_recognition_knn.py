@@ -13,27 +13,24 @@ import time
 from datetime import datetime, timedelta
 import detect_face
 
-def recognition():
-    # cred = credentials.Certificate("../serviceAccountKey.json")
-    # firebase_admin.initialize_app(cred, {
-    #     'databaseURL': 'https://attendance-by-face-default-rtdb.firebaseio.com/',
-    #     'storageBucket': 'attendance-by-face.appspot.com'
-    # })
+cred = credentials.Certificate("../serviceAccountKey.json")
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://attendance-by-face-default-rtdb.firebaseio.com/',
+    'storageBucket': 'attendance-by-face.appspot.com'
+})
 
-    file_model = f'model/model_knn.pkl'
-    bucket = storage.bucket('attendance-by-face.appspot.com')
-    blob = bucket.blob(file_model)
-    data_as_byte = blob.download_as_bytes()
-    knn = pickle.loads(data_as_byte)
+file_model = f'model/model_knn.pkl'
+bucket = storage.bucket('attendance-by-face-7de0b.appspot.com')
+blob = bucket.blob(file_model)
+data_as_byte = blob.download_as_bytes()
+knn = pickle.loads(data_as_byte)
 
 
-    cap = cv2.VideoCapture(0) 
-    template = cv2.imread('../image/input/template2.png', 0)
-    imgBackground=cv2.imread("../image/input/background.jpg")
-    time_start = datetime.now()
-    
-    while True:
-        ret, frame = cap.read()
+cap = cv2.VideoCapture(0) 
+template = cv2.imread('../image/input/template2.png', 0)
+
+while True:
+    ret, frame = cap.read()
 
         flipped_frame = cv2.flip(frame, 1)
         
